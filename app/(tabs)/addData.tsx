@@ -214,8 +214,7 @@ const AddData = () => {
 
         // Reset editing fields
         setTempBudgetAmount('');
-        // Optionally reset nature/type or keep them for next entry
-        // setEditingBudgetNature('');
+        
         // setEditingBudgetType('');
         setIsBudgetEditing(false); // Exit editing mode after setting one budget
         Alert.alert('Budget Set', `Budget for ${editingBudgetNature} (${editingBudgetType}) set to ${parsedAmount}.`);
@@ -228,7 +227,7 @@ const AddData = () => {
 
         return (
             <Fragment>
-                {/* Nature Picker */}
+                {/* Category Picker */}
                 <Text style={[styles.label, { color: theme.textSecondary, marginTop: 15 }]}>Category</Text>
                 <View style={[styles.pickerContainer, { borderColor: theme.inputBorder, backgroundColor: theme.inputBg }]}>
                     <Picker
