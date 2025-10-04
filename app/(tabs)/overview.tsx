@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import {
     View, Text, StyleSheet, Switch, TouchableOpacity, Alert, ScrollView,
-    Platform, ActivityIndicator, Image // Ensure Image is imported
+    Platform, ActivityIndicator, Image 
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useColorScheme } from 'react-native';
@@ -15,8 +15,8 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns';
 
-import { db } from '../../firebaseConfig.js'; // Assuming auth is handled solely by context now
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore"; // Keep for sync
+import { db } from '../../firebaseConfig.js'; 
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore"; 
 
 // --- Import Auth Context ---
 import { useAuth } from '../../AuthContext';
@@ -27,7 +27,7 @@ const SYNC_KEYS = ['user_preferences', 'expenses', 'categories','analysisData'];
 // Example App Version
 const APP_VERSION = '1.0.1';
 
-// --- Notification Configuration (Should be done once, possibly in App.js) ---
+// --- Notification Configuration 
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -57,9 +57,9 @@ async function registerForPushNotificationsAsync(): Promise<string | undefined> 
             return undefined; // Return undefined if permission not granted
         }
         // Get the token
-        // Ensure you replace 'YOUR_EXPO_PROJECT_ID' with your actual project ID
+      
         token = (await Notifications.getExpoPushTokenAsync({
-            projectId: '80becff7-106d-4331-b1c7-2ef99c8d50a1',
+            projectId: 'PROJECT_ID',
         })).data;
         console.log("Expo Push Token:", token);
         return token;
@@ -90,10 +90,9 @@ const SettingsPage = () => {
     const [notification, setNotification] = useState<Notifications.Notification | null>(null);
     const notificationListener = useRef<Notifications.Subscription | null>(null);
     const responseListener = useRef<Notifications.Subscription | null>(null);
-    const [isSyncing, setIsSyncing] = useState<boolean>(false); // Loading state specific to sync actions
+    const [isSyncing, setIsSyncing] = useState<boolean>(false); 
 
     // --- Get Global Auth State and Functions from Context ---
-    // Assuming useAuth hook handles its own loading/error states internally if needed
     const { user, isAuthLoading, login, logout } = useAuth();
 
     // --- Effects ---
@@ -160,7 +159,7 @@ const SettingsPage = () => {
                         updateCurrencySymbol('INR');
                         setNotificationsEnabled(true);
                     }
-                    // Update dark mode based on current system setting outside the try block
+                    // Update dark mode based on current system setting
                     if (isActive) {
                         setDarkMode(colorScheme === 'dark');
                     }
@@ -178,7 +177,7 @@ const SettingsPage = () => {
                 }
             };
             loadPreferences();
-            // Cleanup function for when the effect is re-run or component unmounts
+            
             return () => { isActive = false; };
         }, [colorScheme]) // Rerun if color scheme changes while screen is focused
     );
@@ -278,9 +277,7 @@ const SettingsPage = () => {
         }
     };
 
-    // --- Firestore Sync Functions (Use global `user` from context) ---
-
-    // Syncs *all* defined SYNC_KEYS from AsyncStorage to Firestore
+    
     const syncAllDataToFirestore = async () => {
         // Check for user upfront
         if (!user?.uid) {
@@ -314,12 +311,12 @@ const SettingsPage = () => {
         
              if (Object.keys(dataToSync).length > 3) { // 3 = metadata keys
                 const userDocRef = doc(db, "userSettings", user.uid);
-                // Perform the Firestore write operation (merge to avoid overwriting other fields)
+              
                 await setDoc(userDocRef, dataToSync, { merge: true });
                 Alert.alert("Sync Complete", "Your data has been successfully backed up to the cloud.");
                 console.log("Firestore sync successful.");
              } else {
-                 // Inform user if no data was found locally to sync
+              
                  Alert.alert("Sync Info", "No local data found to back up.");
                  console.log("No data found in AsyncStorage for specified keys to sync.");
              }
@@ -368,7 +365,7 @@ const SettingsPage = () => {
              }
         } catch (error: any) {
             // Catch errors from AsyncStorage or Firestore
-            // Log error without necessarily alerting the user for background syncs
+          
             console.error(`Firestore Sync Error (Specific key: ${keyToSync}):`, error);
             // Consider if an alert is needed here depending on the key's importance
         }
