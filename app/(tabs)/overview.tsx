@@ -15,22 +15,20 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns';
 
-// --- Firebase Imports (Keep if needed for OTHER features like Sync) ---
 import { db } from '../../firebaseConfig.js'; // Assuming auth is handled solely by context now
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore"; // Keep for sync
 
 // --- Import Auth Context ---
-// Make sure the path to your AuthContext file is correct
 import { useAuth } from '../../AuthContext';
 
 // --- Constants ---
-// Keys to sync with Firestore (ensure this matches your needs)
+
 const SYNC_KEYS = ['user_preferences', 'expenses', 'categories','analysisData'];
 // Example App Version
 const APP_VERSION = '1.0.1';
 
 // --- Notification Configuration (Should be done once, possibly in App.js) ---
-// Configure notifications (Consider moving this to a higher level like App.js if not already done)
+
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
@@ -40,8 +38,6 @@ Notifications.setNotificationHandler({
 });
 
 // --- Helper Functions ---
-
-// Function to register for push notifications with error handling
 async function registerForPushNotificationsAsync(): Promise<string | undefined> {
     try { // Wrap the entire function
         let token;
@@ -315,7 +311,7 @@ const SettingsPage = () => {
                 }
             });
 
-             // Check if there's actual app data to sync besides metadata
+        
              if (Object.keys(dataToSync).length > 3) { // 3 = metadata keys
                 const userDocRef = doc(db, "userSettings", user.uid);
                 // Perform the Firestore write operation (merge to avoid overwriting other fields)
@@ -332,7 +328,7 @@ const SettingsPage = () => {
             console.error("Firestore Sync Error (syncAllDataToFirestore):", error);
             Alert.alert("Sync Failed", `Could not back up data to the cloud. Please check your connection and try again. ${error.message}`);
         } finally {
-            setIsSyncing(false); // Stop loading indicator regardless of outcome
+            setIsSyncing(false); 
         }
     };
 
