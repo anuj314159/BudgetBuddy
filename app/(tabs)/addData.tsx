@@ -115,7 +115,7 @@ const AddData = () => {
     }, []); // Run only once on mount
 
     // --- Save Budgets when they change (and not editing) ---
-    // Note: This saves whenever the budget state changes. Consider adding a manual "Save Budgets" button if frequent auto-saving is undesirable.
+
     useEffect(() => {
         const saveBudgets = async () => {
             if (!mounted || isBudgetEditing) return; // Don't save while editing or if not mounted
