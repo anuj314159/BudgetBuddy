@@ -499,7 +499,7 @@ const AddData = () => {
     );
 };
 
-// --- Styles (Adapted from other pages) ---
+// --- Styles ---
 const styles = StyleSheet.create({
     container: {
         flex: 1,
